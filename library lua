@@ -1,4 +1,3 @@
-
 local ToMomentUI = {}
 ToMomentUI.__index = ToMomentUI
 
@@ -10,7 +9,7 @@ local function AnimateBorder(stroke)
 	task.spawn(function()
 		while stroke and stroke.Parent do
 			hue = (hue + 0.008) % 1
-			stroke.Color = Color3.fromHSV(hue * 0.18 + 0.45, 1, 1)
+			stroke.Color = Color3.fromHSV(hue * 0.08, 1, 1)
 			task.wait()
 		end
 	end)
@@ -20,7 +19,7 @@ local function MakeStroke(parent, thickness)
 	local s = Instance.new("UIStroke", parent)
 	s.Thickness = thickness or 2
 	s.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-	s.Color = Color3.fromRGB(0, 200, 120)
+	s.Color = Color3.fromRGB(255, 0, 0)
 	AnimateBorder(s)
 	return s
 end
@@ -52,12 +51,12 @@ function ToMomentUI.new(config)
 	MakeStroke(MainFrame, 2)
 
 	local Title = Instance.new("TextLabel", MainFrame)
-	Title.Text = (config.Title or "ToMomentUI") .. " | " .. "78627484864014"
+	Title.Text = config.Title or "ToMomentUI"
 	Title.Size = UDim2.new(1, -50, 0, 25)
 	Title.Position = UDim2.new(0, 10, 0, 5)
-	Title.TextColor3 = Color3.fromRGB(0, 200, 120)
+	Title.TextColor3 = Color3.fromRGB(255, 50, 50)
 	Title.Font = Enum.Font.GothamBold
-	Title.TextSize = 11
+	Title.TextSize = 13
 	Title.TextXAlignment = Enum.TextXAlignment.Left
 	Title.BackgroundTransparency = 1
 
@@ -91,20 +90,23 @@ function ToMomentUI.new(config)
 	Container.BackgroundTransparency = 1
 	Container.ClipsDescendants = true
 
-	local LogoBtn = Instance.new("TextButton", ScreenGui)
+	local LogoBtn = Instance.new("ImageButton", ScreenGui)
 	LogoBtn.Size = UDim2.new(0, 44, 0, 44)
 	LogoBtn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 	LogoBtn.BackgroundTransparency = 0.3
-	LogoBtn.Text = "78627484864014"
-	LogoBtn.TextColor3 = Color3.fromRGB(0, 200, 120)
-	LogoBtn.Font = Enum.Font.GothamBold
-	LogoBtn.TextSize = 7
-	LogoBtn.TextWrapped = true
+	LogoBtn.Image = "rbxassetid://78627484864014"
 	LogoBtn.Draggable = true
 	LogoBtn.Visible = false
 	LogoBtn.ZIndex = 10
 	MakeCorner(LogoBtn, 6)
 	MakeStroke(LogoBtn, 2)
+
+	local TitleIcon = Instance.new("ImageLabel", MainFrame)
+	TitleIcon.Size = UDim2.new(0, 20, 0, 20)
+	TitleIcon.Position = UDim2.new(1, -56, 0, 8)
+	TitleIcon.BackgroundTransparency = 1
+	TitleIcon.Image = "rbxassetid://78627484864014"
+	TitleIcon.ZIndex = 5
 
 	MinBtn.MouseButton1Click:Connect(function()
 		LogoBtn.Position = UDim2.new(
@@ -149,7 +151,7 @@ function ToMomentUI:AddTab(name)
 	TabFrame.BackgroundTransparency = 1
 	TabFrame.BorderSizePixel = 0
 	TabFrame.ScrollBarThickness = 2
-	TabFrame.ScrollBarImageColor3 = Color3.fromRGB(0, 180, 120)
+	TabFrame.ScrollBarImageColor3 = Color3.fromRGB(255, 50, 50)
 	TabFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
 	TabFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
 	TabFrame.Visible = false
@@ -174,7 +176,7 @@ function ToMomentUI:AddTab(name)
 			td.Button.BackgroundTransparency = 0.7
 		end
 		TabFrame.Visible = true
-		TabBtn.TextColor3 = Color3.fromRGB(0, 200, 120)
+		TabBtn.TextColor3 = Color3.fromRGB(255, 50, 50)
 		TabBtn.BackgroundTransparency = 0.4
 	end
 
@@ -182,7 +184,6 @@ function ToMomentUI:AddTab(name)
 	table.insert(self._tabs, tabData)
 	if #self._tabs == 1 then SelectTab() end
 
-	local mainFrameRef = self.MainFrame
 	local screenGuiRef = self.ScreenGui
 
 	function tabData:AddWidget(widget)
@@ -209,13 +210,12 @@ function ToMomentUI:AddTab(name)
 
 	function tabData:AddToggle(labelText, default, callback)
 		local state = default or false
-
 		local Btn = Instance.new("TextButton")
 		Btn.Size = UDim2.new(0, 155, 0, 30)
 		Btn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 		Btn.BackgroundTransparency = 0.7
 		Btn.Text = labelText .. ": " .. (state and "ON" or "OFF")
-		Btn.TextColor3 = state and Color3.fromRGB(0, 200, 120) or Color3.new(1, 1, 1)
+		Btn.TextColor3 = state and Color3.fromRGB(255, 50, 50) or Color3.new(1, 1, 1)
 		Btn.Font = Enum.Font.GothamBold
 		Btn.TextSize = 11
 		MakeCorner(Btn, 4)
@@ -228,7 +228,7 @@ function ToMomentUI:AddTab(name)
 			state = newState
 			toggleData.Value = state
 			Btn.Text = labelText .. ": " .. (state and "ON" or "OFF")
-			Btn.TextColor3 = state and Color3.fromRGB(0, 200, 120) or Color3.new(1, 1, 1)
+			Btn.TextColor3 = state and Color3.fromRGB(255, 50, 50) or Color3.new(1, 1, 1)
 			if callback then pcall(callback, state) end
 		end
 
@@ -266,7 +266,7 @@ function ToMomentUI:AddTab(name)
 		ValLabel.Position = UDim2.new(0.6, 0, 0, 2)
 		ValLabel.BackgroundTransparency = 1
 		ValLabel.Text = tostring(default) .. suffix
-		ValLabel.TextColor3 = Color3.fromRGB(0, 200, 120)
+		ValLabel.TextColor3 = Color3.fromRGB(255, 50, 50)
 		ValLabel.Font = Enum.Font.GothamBold
 		ValLabel.TextSize = 11
 		ValLabel.TextXAlignment = Enum.TextXAlignment.Right
@@ -279,7 +279,7 @@ function ToMomentUI:AddTab(name)
 
 		local Fill = Instance.new("Frame", Track)
 		Fill.Size = UDim2.new((default - min) / (max - min), 0, 1, 0)
-		Fill.BackgroundColor3 = Color3.fromRGB(0, 200, 120)
+		Fill.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
 		MakeCorner(Fill, 3)
 
 		local sliderData = {Value = default}
@@ -380,7 +380,7 @@ function ToMomentUI:AddTab(name)
 		DropScroll.BackgroundTransparency = 1
 		DropScroll.BorderSizePixel = 0
 		DropScroll.ScrollBarThickness = 2
-		DropScroll.ScrollBarImageColor3 = Color3.fromRGB(0, 180, 120)
+		DropScroll.ScrollBarImageColor3 = Color3.fromRGB(255, 50, 50)
 		DropScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
 		DropScroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
 		DropScroll.ZIndex = 51
@@ -401,7 +401,7 @@ function ToMomentUI:AddTab(name)
 			b.MouseButton1Click:Connect(function()
 				selected = opt
 				SelBtn.Text = selected .. " ▼"
-				SelBtn.TextColor3 = Color3.fromRGB(0, 200, 120)
+				SelBtn.TextColor3 = Color3.fromRGB(255, 50, 50)
 				DropFrame.Visible = false
 				if callback then pcall(callback, selected) end
 			end)
@@ -442,7 +442,7 @@ function ToMomentUI:AddTab(name)
 		Label.Size = UDim2.new(0, 155, 0, 18)
 		Label.BackgroundTransparency = 1
 		Label.Text = text
-		Label.TextColor3 = Color3.fromRGB(0, 200, 120)
+		Label.TextColor3 = Color3.fromRGB(255, 50, 50)
 		Label.Font = Enum.Font.GothamBold
 		Label.TextSize = 10
 		Label.TextXAlignment = Enum.TextXAlignment.Left
