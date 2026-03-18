@@ -5,11 +5,12 @@ local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
 
 local function AnimateBorder(stroke)
-	local hue = 0
+	local t = 0
 	task.spawn(function()
 		while stroke and stroke.Parent do
-			hue = (hue + 0.008) % 1
-			stroke.Color = Color3.fromHSV(hue * 0.08, 1, 1)
+			t = t + 0.012
+			local r = 0.55 + math.sin(t) * 0.1
+			stroke.Color = Color3.fromHSV(r, 0.35, 1)
 			task.wait()
 		end
 	end)
@@ -19,7 +20,7 @@ local function MakeStroke(parent, thickness)
 	local s = Instance.new("UIStroke", parent)
 	s.Thickness = thickness or 2
 	s.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-	s.Color = Color3.fromRGB(255, 0, 0)
+	s.Color = Color3.fromRGB(160, 220, 255)
 	AnimateBorder(s)
 	return s
 end
@@ -50,15 +51,26 @@ function ToMomentUI.new(config)
 	MakeCorner(MainFrame, 6)
 	MakeStroke(MainFrame, 2)
 
+	local BgImage = Instance.new("ImageLabel", MainFrame)
+	BgImage.Size = UDim2.new(1, 0, 1, 0)
+	BgImage.Position = UDim2.new(0, 0, 0, 0)
+	BgImage.BackgroundTransparency = 1
+	BgImage.Image = "rbxassetid://78627484864014"
+	BgImage.ImageTransparency = 0.85
+	BgImage.ScaleType = Enum.ScaleType.Crop
+	BgImage.ZIndex = 0
+	MakeCorner(BgImage, 6)
+
 	local Title = Instance.new("TextLabel", MainFrame)
 	Title.Text = config.Title or "ToMomentUI"
 	Title.Size = UDim2.new(1, -50, 0, 25)
 	Title.Position = UDim2.new(0, 10, 0, 5)
-	Title.TextColor3 = Color3.fromRGB(255, 50, 50)
+	Title.TextColor3 = Color3.fromRGB(160, 220, 255)
 	Title.Font = Enum.Font.GothamBold
 	Title.TextSize = 13
 	Title.TextXAlignment = Enum.TextXAlignment.Left
 	Title.BackgroundTransparency = 1
+	Title.ZIndex = 2
 
 	local MinBtn = Instance.new("TextButton", MainFrame)
 	MinBtn.Size = UDim2.new(0, 22, 0, 22)
@@ -68,6 +80,7 @@ function ToMomentUI.new(config)
 	MinBtn.TextColor3 = Color3.new(1, 1, 1)
 	MinBtn.Font = Enum.Font.GothamBold
 	MinBtn.TextSize = 8
+	MinBtn.ZIndex = 2
 	MakeCorner(MinBtn, 4)
 
 	local TabBar = Instance.new("Frame", MainFrame)
@@ -75,6 +88,7 @@ function ToMomentUI.new(config)
 	TabBar.Position = UDim2.new(0, 0, 0, 32)
 	TabBar.BackgroundTransparency = 1
 	TabBar.BorderSizePixel = 0
+	TabBar.ZIndex = 2
 
 	local TabList = Instance.new("UIListLayout", TabBar)
 	TabList.FillDirection = Enum.FillDirection.Horizontal
@@ -89,6 +103,7 @@ function ToMomentUI.new(config)
 	Container.Position = UDim2.new(0, 0, 0, 58)
 	Container.BackgroundTransparency = 1
 	Container.ClipsDescendants = true
+	Container.ZIndex = 2
 
 	local LogoBtn = Instance.new("ImageButton", ScreenGui)
 	LogoBtn.Size = UDim2.new(0, 44, 0, 44)
@@ -100,13 +115,6 @@ function ToMomentUI.new(config)
 	LogoBtn.ZIndex = 10
 	MakeCorner(LogoBtn, 6)
 	MakeStroke(LogoBtn, 2)
-
-	local TitleIcon = Instance.new("ImageLabel", MainFrame)
-	TitleIcon.Size = UDim2.new(0, 20, 0, 20)
-	TitleIcon.Position = UDim2.new(1, -56, 0, 8)
-	TitleIcon.BackgroundTransparency = 1
-	TitleIcon.Image = "rbxassetid://78627484864014"
-	TitleIcon.ZIndex = 5
 
 	MinBtn.MouseButton1Click:Connect(function()
 		LogoBtn.Position = UDim2.new(
@@ -144,6 +152,7 @@ function ToMomentUI:AddTab(name)
 	TabBtn.TextColor3 = Color3.new(0.5, 0.5, 0.5)
 	TabBtn.Font = Enum.Font.GothamBold
 	TabBtn.TextSize = 10
+	TabBtn.ZIndex = 3
 	MakeCorner(TabBtn, 4)
 
 	local TabFrame = Instance.new("ScrollingFrame", self.Container)
@@ -151,10 +160,11 @@ function ToMomentUI:AddTab(name)
 	TabFrame.BackgroundTransparency = 1
 	TabFrame.BorderSizePixel = 0
 	TabFrame.ScrollBarThickness = 2
-	TabFrame.ScrollBarImageColor3 = Color3.fromRGB(255, 50, 50)
+	TabFrame.ScrollBarImageColor3 = Color3.fromRGB(160, 220, 255)
 	TabFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
 	TabFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
 	TabFrame.Visible = false
+	TabFrame.ZIndex = 3
 
 	local UIList = Instance.new("UIListLayout", TabFrame)
 	UIList.Padding = UDim.new(0, 6)
@@ -176,7 +186,7 @@ function ToMomentUI:AddTab(name)
 			td.Button.BackgroundTransparency = 0.7
 		end
 		TabFrame.Visible = true
-		TabBtn.TextColor3 = Color3.fromRGB(255, 50, 50)
+		TabBtn.TextColor3 = Color3.fromRGB(160, 220, 255)
 		TabBtn.BackgroundTransparency = 0.4
 	end
 
@@ -201,6 +211,7 @@ function ToMomentUI:AddTab(name)
 		Btn.TextColor3 = Color3.new(1, 1, 1)
 		Btn.Font = Enum.Font.GothamBold
 		Btn.TextSize = 11
+		Btn.ZIndex = 4
 		MakeCorner(Btn, 4)
 		MakeStroke(Btn, 2)
 		tabData:AddWidget(Btn)
@@ -215,9 +226,10 @@ function ToMomentUI:AddTab(name)
 		Btn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 		Btn.BackgroundTransparency = 0.7
 		Btn.Text = labelText .. ": " .. (state and "ON" or "OFF")
-		Btn.TextColor3 = state and Color3.fromRGB(255, 50, 50) or Color3.new(1, 1, 1)
+		Btn.TextColor3 = state and Color3.fromRGB(160, 220, 255) or Color3.new(1, 1, 1)
 		Btn.Font = Enum.Font.GothamBold
 		Btn.TextSize = 11
+		Btn.ZIndex = 4
 		MakeCorner(Btn, 4)
 		MakeStroke(Btn, 2)
 		tabData:AddWidget(Btn)
@@ -228,7 +240,7 @@ function ToMomentUI:AddTab(name)
 			state = newState
 			toggleData.Value = state
 			Btn.Text = labelText .. ": " .. (state and "ON" or "OFF")
-			Btn.TextColor3 = state and Color3.fromRGB(255, 50, 50) or Color3.new(1, 1, 1)
+			Btn.TextColor3 = state and Color3.fromRGB(160, 220, 255) or Color3.new(1, 1, 1)
 			if callback then pcall(callback, state) end
 		end
 
@@ -247,6 +259,7 @@ function ToMomentUI:AddTab(name)
 		Holder.Size = UDim2.new(0, 155, 0, 46)
 		Holder.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 		Holder.BackgroundTransparency = 0.7
+		Holder.ZIndex = 4
 		MakeCorner(Holder, 4)
 		MakeStroke(Holder, 2)
 		tabData:AddWidget(Holder)
@@ -260,26 +273,30 @@ function ToMomentUI:AddTab(name)
 		NameLabel.Font = Enum.Font.GothamBold
 		NameLabel.TextSize = 11
 		NameLabel.TextXAlignment = Enum.TextXAlignment.Left
+		NameLabel.ZIndex = 5
 
 		local ValLabel = Instance.new("TextLabel", Holder)
 		ValLabel.Size = UDim2.new(0.4, -7, 0, 20)
 		ValLabel.Position = UDim2.new(0.6, 0, 0, 2)
 		ValLabel.BackgroundTransparency = 1
 		ValLabel.Text = tostring(default) .. suffix
-		ValLabel.TextColor3 = Color3.fromRGB(255, 50, 50)
+		ValLabel.TextColor3 = Color3.fromRGB(160, 220, 255)
 		ValLabel.Font = Enum.Font.GothamBold
 		ValLabel.TextSize = 11
 		ValLabel.TextXAlignment = Enum.TextXAlignment.Right
+		ValLabel.ZIndex = 5
 
 		local Track = Instance.new("Frame", Holder)
 		Track.Size = UDim2.new(1, -14, 0, 6)
 		Track.Position = UDim2.new(0, 7, 0, 32)
 		Track.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+		Track.ZIndex = 5
 		MakeCorner(Track, 3)
 
 		local Fill = Instance.new("Frame", Track)
 		Fill.Size = UDim2.new((default - min) / (max - min), 0, 1, 0)
-		Fill.BackgroundColor3 = Color3.fromRGB(255, 50, 50)
+		Fill.BackgroundColor3 = Color3.fromRGB(160, 220, 255)
+		Fill.ZIndex = 6
 		MakeCorner(Fill, 3)
 
 		local sliderData = {Value = default}
@@ -334,6 +351,7 @@ function ToMomentUI:AddTab(name)
 		Box.TextSize = 11
 		Box.Text = ""
 		Box.ClearTextOnFocus = false
+		Box.ZIndex = 4
 		MakeCorner(Box, 4)
 		MakeStroke(Box, 2)
 		tabData:AddWidget(Box)
@@ -363,6 +381,7 @@ function ToMomentUI:AddTab(name)
 		SelBtn.TextColor3 = Color3.new(1, 1, 1)
 		SelBtn.Font = Enum.Font.GothamBold
 		SelBtn.TextSize = 11
+		SelBtn.ZIndex = 4
 		MakeCorner(SelBtn, 4)
 		MakeStroke(SelBtn, 2)
 		tabData:AddWidget(SelBtn)
@@ -380,7 +399,7 @@ function ToMomentUI:AddTab(name)
 		DropScroll.BackgroundTransparency = 1
 		DropScroll.BorderSizePixel = 0
 		DropScroll.ScrollBarThickness = 2
-		DropScroll.ScrollBarImageColor3 = Color3.fromRGB(255, 50, 50)
+		DropScroll.ScrollBarImageColor3 = Color3.fromRGB(160, 220, 255)
 		DropScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
 		DropScroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
 		DropScroll.ZIndex = 51
@@ -401,7 +420,7 @@ function ToMomentUI:AddTab(name)
 			b.MouseButton1Click:Connect(function()
 				selected = opt
 				SelBtn.Text = selected .. " ▼"
-				SelBtn.TextColor3 = Color3.fromRGB(255, 50, 50)
+				SelBtn.TextColor3 = Color3.fromRGB(160, 220, 255)
 				DropFrame.Visible = false
 				if callback then pcall(callback, selected) end
 			end)
@@ -442,10 +461,11 @@ function ToMomentUI:AddTab(name)
 		Label.Size = UDim2.new(0, 155, 0, 18)
 		Label.BackgroundTransparency = 1
 		Label.Text = text
-		Label.TextColor3 = Color3.fromRGB(255, 50, 50)
+		Label.TextColor3 = Color3.fromRGB(160, 220, 255)
 		Label.Font = Enum.Font.GothamBold
 		Label.TextSize = 10
 		Label.TextXAlignment = Enum.TextXAlignment.Left
+		Label.ZIndex = 4
 		tabData:AddWidget(Label)
 		return Label
 	end
