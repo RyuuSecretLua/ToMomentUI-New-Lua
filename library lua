@@ -5,15 +5,12 @@ ToMomentUI.__index = ToMomentUI
 local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
 
-local ACCENT = Color3.fromRGB(0, 180, 120)
-
 local function AnimateBorder(stroke)
 	local hue = 0
 	task.spawn(function()
 		while stroke and stroke.Parent do
 			hue = (hue + 0.008) % 1
-			local r, g, b = Color3.fromHSV(hue * 0.18 + 0.45, 1, 1):components()
-			stroke.Color = Color3.new(r, g, b)
+			stroke.Color = Color3.fromHSV(hue * 0.18 + 0.45, 1, 1)
 			task.wait()
 		end
 	end)
@@ -23,7 +20,7 @@ local function MakeStroke(parent, thickness)
 	local s = Instance.new("UIStroke", parent)
 	s.Thickness = thickness or 2
 	s.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-	s.Color = ACCENT
+	s.Color = Color3.fromRGB(0, 200, 120)
 	AnimateBorder(s)
 	return s
 end
@@ -39,11 +36,12 @@ function ToMomentUI.new(config)
 	local ScreenGui = Instance.new("ScreenGui")
 	ScreenGui.Name = "ToMomentUI"
 	ScreenGui.ResetOnSpawn = false
+	ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Global
 	ScreenGui.Parent = game.CoreGui
 
 	local MainFrame = Instance.new("Frame")
-	MainFrame.Size = UDim2.new(0, 160, 0, 320)
-	MainFrame.Position = config.Position or UDim2.new(0, 45, 0.5, -160)
+	MainFrame.Size = UDim2.new(0, 190, 0, 380)
+	MainFrame.Position = config.Position or UDim2.new(0, 45, 0.5, -190)
 	MainFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 	MainFrame.BackgroundTransparency = 0.3
 	MainFrame.BorderSizePixel = 0
@@ -54,28 +52,18 @@ function ToMomentUI.new(config)
 	MakeStroke(MainFrame, 2)
 
 	local Title = Instance.new("TextLabel", MainFrame)
-	Title.Text = config.Title or "ToMomentUI"
-	Title.Size = UDim2.new(0, 110, 0, 25)
+	Title.Text = (config.Title or "ToMomentUI") .. " | " .. "78627484864014"
+	Title.Size = UDim2.new(1, -50, 0, 25)
 	Title.Position = UDim2.new(0, 10, 0, 5)
 	Title.TextColor3 = Color3.fromRGB(0, 200, 120)
 	Title.Font = Enum.Font.GothamBold
-	Title.TextSize = 13
+	Title.TextSize = 11
 	Title.TextXAlignment = Enum.TextXAlignment.Left
 	Title.BackgroundTransparency = 1
 
-	local CloseBtn = Instance.new("TextButton", MainFrame)
-	CloseBtn.Size = UDim2.new(0, 20, 0, 20)
-	CloseBtn.Position = UDim2.new(1, -29, 0, 7)
-	CloseBtn.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
-	CloseBtn.Text = "X"
-	CloseBtn.TextColor3 = Color3.new(1, 1, 1)
-	CloseBtn.Font = Enum.Font.GothamBold
-	CloseBtn.TextSize = 12
-	MakeCorner(CloseBtn, 4)
-
 	local MinBtn = Instance.new("TextButton", MainFrame)
-	MinBtn.Size = UDim2.new(0, 20, 0, 20)
-	MinBtn.Position = UDim2.new(1, -53, 0, 7)
+	MinBtn.Size = UDim2.new(0, 22, 0, 22)
+	MinBtn.Position = UDim2.new(1, -30, 0, 6)
 	MinBtn.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
 	MinBtn.Text = "—"
 	MinBtn.TextColor3 = Color3.new(1, 1, 1)
@@ -84,8 +72,8 @@ function ToMomentUI.new(config)
 	MakeCorner(MinBtn, 4)
 
 	local TabBar = Instance.new("Frame", MainFrame)
-	TabBar.Size = UDim2.new(1, 0, 0, 22)
-	TabBar.Position = UDim2.new(0, 0, 0, 30)
+	TabBar.Size = UDim2.new(1, 0, 0, 24)
+	TabBar.Position = UDim2.new(0, 0, 0, 32)
 	TabBar.BackgroundTransparency = 1
 	TabBar.BorderSizePixel = 0
 
@@ -98,19 +86,20 @@ function ToMomentUI.new(config)
 	TabPad.PaddingLeft = UDim.new(0, 6)
 
 	local Container = Instance.new("Frame", MainFrame)
-	Container.Size = UDim2.new(1, 0, 1, -57)
-	Container.Position = UDim2.new(0, 0, 0, 54)
+	Container.Size = UDim2.new(1, 0, 1, -60)
+	Container.Position = UDim2.new(0, 0, 0, 58)
 	Container.BackgroundTransparency = 1
 	Container.ClipsDescendants = true
 
 	local LogoBtn = Instance.new("TextButton", ScreenGui)
-	LogoBtn.Size = UDim2.new(0, 40, 0, 40)
+	LogoBtn.Size = UDim2.new(0, 44, 0, 44)
 	LogoBtn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 	LogoBtn.BackgroundTransparency = 0.3
-	LogoBtn.Text = "W"
+	LogoBtn.Text = "78627484864014"
 	LogoBtn.TextColor3 = Color3.fromRGB(0, 200, 120)
 	LogoBtn.Font = Enum.Font.GothamBold
-	LogoBtn.TextSize = 25
+	LogoBtn.TextSize = 7
+	LogoBtn.TextWrapped = true
 	LogoBtn.Draggable = true
 	LogoBtn.Visible = false
 	LogoBtn.ZIndex = 10
@@ -133,10 +122,6 @@ function ToMomentUI.new(config)
 		MainFrame.Visible = true
 	end)
 
-	CloseBtn.MouseButton1Click:Connect(function()
-		ScreenGui:Destroy()
-	end)
-
 	self.ScreenGui = ScreenGui
 	self.MainFrame = MainFrame
 	self.TabBar = TabBar
@@ -150,13 +135,13 @@ function ToMomentUI:AddTab(name)
 	local tabData = {}
 
 	local TabBtn = Instance.new("TextButton", self.TabBar)
-	TabBtn.Size = UDim2.new(0, 44, 1, 0)
+	TabBtn.Size = UDim2.new(0, 50, 1, 0)
 	TabBtn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 	TabBtn.BackgroundTransparency = 0.7
 	TabBtn.Text = name
 	TabBtn.TextColor3 = Color3.new(0.5, 0.5, 0.5)
 	TabBtn.Font = Enum.Font.GothamBold
-	TabBtn.TextSize = 9
+	TabBtn.TextSize = 10
 	MakeCorner(TabBtn, 4)
 
 	local TabFrame = Instance.new("ScrollingFrame", self.Container)
@@ -176,6 +161,7 @@ function ToMomentUI:AddTab(name)
 
 	local UIPad = Instance.new("UIPadding", TabFrame)
 	UIPad.PaddingTop = UDim.new(0, 4)
+	UIPad.PaddingBottom = UDim.new(0, 8)
 
 	tabData.Button = TabBtn
 	tabData.Frame = TabFrame
@@ -196,6 +182,9 @@ function ToMomentUI:AddTab(name)
 	table.insert(self._tabs, tabData)
 	if #self._tabs == 1 then SelectTab() end
 
+	local mainFrameRef = self.MainFrame
+	local screenGuiRef = self.ScreenGui
+
 	function tabData:AddWidget(widget)
 		widget.LayoutOrder = tabData._order
 		tabData._order = tabData._order + 1
@@ -204,7 +193,7 @@ function ToMomentUI:AddTab(name)
 
 	function tabData:AddButton(labelText, callback)
 		local Btn = Instance.new("TextButton")
-		Btn.Size = UDim2.new(0, 130, 0, 28)
+		Btn.Size = UDim2.new(0, 155, 0, 30)
 		Btn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 		Btn.BackgroundTransparency = 0.7
 		Btn.Text = labelText
@@ -222,7 +211,7 @@ function ToMomentUI:AddTab(name)
 		local state = default or false
 
 		local Btn = Instance.new("TextButton")
-		Btn.Size = UDim2.new(0, 130, 0, 28)
+		Btn.Size = UDim2.new(0, 155, 0, 30)
 		Btn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 		Btn.BackgroundTransparency = 0.7
 		Btn.Text = labelText .. ": " .. (state and "ON" or "OFF")
@@ -255,7 +244,7 @@ function ToMomentUI:AddTab(name)
 		local suffix = options.Suffix or ""
 
 		local Holder = Instance.new("Frame")
-		Holder.Size = UDim2.new(0, 130, 0, 44)
+		Holder.Size = UDim2.new(0, 155, 0, 46)
 		Holder.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 		Holder.BackgroundTransparency = 0.7
 		MakeCorner(Holder, 4)
@@ -263,28 +252,28 @@ function ToMomentUI:AddTab(name)
 		tabData:AddWidget(Holder)
 
 		local NameLabel = Instance.new("TextLabel", Holder)
-		NameLabel.Size = UDim2.new(0.6, 0, 0, 18)
-		NameLabel.Position = UDim2.new(0, 6, 0, 2)
+		NameLabel.Size = UDim2.new(0.6, 0, 0, 20)
+		NameLabel.Position = UDim2.new(0, 7, 0, 2)
 		NameLabel.BackgroundTransparency = 1
 		NameLabel.Text = labelText
 		NameLabel.TextColor3 = Color3.new(1, 1, 1)
 		NameLabel.Font = Enum.Font.GothamBold
-		NameLabel.TextSize = 10
+		NameLabel.TextSize = 11
 		NameLabel.TextXAlignment = Enum.TextXAlignment.Left
 
 		local ValLabel = Instance.new("TextLabel", Holder)
-		ValLabel.Size = UDim2.new(0.4, -6, 0, 18)
+		ValLabel.Size = UDim2.new(0.4, -7, 0, 20)
 		ValLabel.Position = UDim2.new(0.6, 0, 0, 2)
 		ValLabel.BackgroundTransparency = 1
 		ValLabel.Text = tostring(default) .. suffix
 		ValLabel.TextColor3 = Color3.fromRGB(0, 200, 120)
 		ValLabel.Font = Enum.Font.GothamBold
-		ValLabel.TextSize = 10
+		ValLabel.TextSize = 11
 		ValLabel.TextXAlignment = Enum.TextXAlignment.Right
 
 		local Track = Instance.new("Frame", Holder)
-		Track.Size = UDim2.new(1, -12, 0, 5)
-		Track.Position = UDim2.new(0, 6, 0, 28)
+		Track.Size = UDim2.new(1, -14, 0, 6)
+		Track.Position = UDim2.new(0, 7, 0, 32)
 		Track.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
 		MakeCorner(Track, 3)
 
@@ -299,8 +288,7 @@ function ToMomentUI:AddTab(name)
 		local function Update(inputX)
 			local relX = math.clamp((inputX - Track.AbsolutePosition.X) / Track.AbsoluteSize.X, 0, 1)
 			local value = math.floor(min + relX * (max - min) + 0.5)
-			local perc = (value - min) / (max - min)
-			Fill.Size = UDim2.new(perc, 0, 1, 0)
+			Fill.Size = UDim2.new((value - min) / (max - min), 0, 1, 0)
 			ValLabel.Text = tostring(value) .. suffix
 			sliderData.Value = value
 			if callback then pcall(callback, value) end
@@ -326,8 +314,7 @@ function ToMomentUI:AddTab(name)
 		end)
 
 		sliderData.Set = function(v)
-			local perc = math.clamp((v - min) / (max - min), 0, 1)
-			Fill.Size = UDim2.new(perc, 0, 1, 0)
+			Fill.Size = UDim2.new(math.clamp((v - min) / (max - min), 0, 1), 0, 1, 0)
 			ValLabel.Text = tostring(v) .. suffix
 			sliderData.Value = v
 		end
@@ -337,7 +324,7 @@ function ToMomentUI:AddTab(name)
 
 	function tabData:AddInput(placeholder, callback)
 		local Box = Instance.new("TextBox")
-		Box.Size = UDim2.new(0, 130, 0, 24)
+		Box.Size = UDim2.new(0, 155, 0, 26)
 		Box.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 		Box.BackgroundTransparency = 0.7
 		Box.TextColor3 = Color3.new(1, 1, 1)
@@ -369,7 +356,7 @@ function ToMomentUI:AddTab(name)
 		local selected = options[1] or ""
 
 		local SelBtn = Instance.new("TextButton")
-		SelBtn.Size = UDim2.new(0, 130, 0, 28)
+		SelBtn.Size = UDim2.new(0, 155, 0, 30)
 		SelBtn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 		SelBtn.BackgroundTransparency = 0.7
 		SelBtn.Text = selected .. " ▼"
@@ -380,27 +367,37 @@ function ToMomentUI:AddTab(name)
 		MakeStroke(SelBtn, 2)
 		tabData:AddWidget(SelBtn)
 
-		local DropFrame = Instance.new("Frame", self.MainFrame)
-		DropFrame.Size = UDim2.new(0, 130, 0, math.min(#options * 25, 100))
+		local DropFrame = Instance.new("Frame", screenGuiRef)
+		DropFrame.Size = UDim2.new(0, 155, 0, math.min(#options * 26, 130))
 		DropFrame.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
 		DropFrame.Visible = false
-		DropFrame.ZIndex = 15
+		DropFrame.ZIndex = 50
 		MakeCorner(DropFrame, 4)
 		MakeStroke(DropFrame, 2)
 
-		local DropList = Instance.new("UIListLayout", DropFrame)
+		local DropScroll = Instance.new("ScrollingFrame", DropFrame)
+		DropScroll.Size = UDim2.new(1, 0, 1, 0)
+		DropScroll.BackgroundTransparency = 1
+		DropScroll.BorderSizePixel = 0
+		DropScroll.ScrollBarThickness = 2
+		DropScroll.ScrollBarImageColor3 = Color3.fromRGB(0, 180, 120)
+		DropScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
+		DropScroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
+		DropScroll.ZIndex = 51
+
+		local DropList = Instance.new("UIListLayout", DropScroll)
 		DropList.SortOrder = Enum.SortOrder.LayoutOrder
 
 		for i, opt in ipairs(options) do
-			local b = Instance.new("TextButton", DropFrame)
+			local b = Instance.new("TextButton", DropScroll)
 			b.LayoutOrder = i
-			b.Size = UDim2.new(1, 0, 0, 25)
+			b.Size = UDim2.new(1, 0, 0, 26)
 			b.BackgroundTransparency = 1
 			b.Text = opt
 			b.TextColor3 = Color3.new(1, 1, 1)
 			b.Font = Enum.Font.GothamSemibold
-			b.TextSize = 10
-			b.ZIndex = 16
+			b.TextSize = 11
+			b.ZIndex = 52
 			b.MouseButton1Click:Connect(function()
 				selected = opt
 				SelBtn.Text = selected .. " ▼"
@@ -411,10 +408,25 @@ function ToMomentUI:AddTab(name)
 		end
 
 		SelBtn.MouseButton1Click:Connect(function()
-			DropFrame.Visible = not DropFrame.Visible
+			if DropFrame.Visible then
+				DropFrame.Visible = false
+				return
+			end
 			local absPos = SelBtn.AbsolutePosition
-			local mainPos = self.MainFrame.AbsolutePosition
-			DropFrame.Position = UDim2.new(0, absPos.X - mainPos.X, 0, absPos.Y - mainPos.Y + SelBtn.AbsoluteSize.Y + 2)
+			local absSize = SelBtn.AbsoluteSize
+			DropFrame.Position = UDim2.new(0, absPos.X, 0, absPos.Y + absSize.Y + 2)
+			DropFrame.Visible = true
+		end)
+
+		UserInputService.InputBegan:Connect(function(i)
+			if i.UserInputType == Enum.UserInputType.MouseButton1 then
+				local mp = UserInputService:GetMouseLocation()
+				local dp = DropFrame.AbsolutePosition
+				local ds = DropFrame.AbsoluteSize
+				if DropFrame.Visible and not (mp.X >= dp.X and mp.X <= dp.X + ds.X and mp.Y >= dp.Y and mp.Y <= dp.Y + ds.Y) then
+					DropFrame.Visible = false
+				end
+			end
 		end)
 
 		local selectData = {
@@ -427,7 +439,7 @@ function ToMomentUI:AddTab(name)
 
 	function tabData:AddLabel(text)
 		local Label = Instance.new("TextLabel")
-		Label.Size = UDim2.new(0, 130, 0, 18)
+		Label.Size = UDim2.new(0, 155, 0, 18)
 		Label.BackgroundTransparency = 1
 		Label.Text = text
 		Label.TextColor3 = Color3.fromRGB(0, 200, 120)
